@@ -13,9 +13,10 @@ import {
   modifiers,
   Suitness,
   suitness,
-  Hand,
   Range,
+  HandR,
   HandRange,
+  Card,
 } from "./types";
 
 export const parseModifier: P.Parser<string, Modifier> = pipe(
@@ -32,18 +33,19 @@ export const parseSuit: P.Parser<string, Suit> = pipe(
   P.chain((c) => P.of(c as Suit))
 );
 
-const parseRank = pipe(
+const parseRank: P.Parser<string, Rank> = pipe(
   C.oneOf(ranks.join("")),
   P.map((c) => c as Rank)
 );
 
-const parseCard = pipe(
+const parseCard: P.Parser<string, Card> = pipe(
   parseRank,
   P.bindTo("kicker"),
-  P.bind("suit", () => parseSuit)
+  P.bind("suit", () => parseSuit),
+  P.map((c) => c as Card)
 );
 
-const separator = P.either(C.oneOf(",/|"), () => S.spaces);
+const separator = P.either(C.oneOf(",/|,"), () => S.spaces);
 
 const parseHR: P.Parser<string, Range> = pipe(
   parseRank,
@@ -60,7 +62,7 @@ const parseHR: P.Parser<string, Range> = pipe(
   }))
 );
 
-const parseHand: P.Parser<string, Hand> = pipe(
+const parseHand: P.Parser<string, HandR> = pipe(
   parseCard,
   P.chain((card1) => {
     return pipe(

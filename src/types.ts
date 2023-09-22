@@ -1,25 +1,36 @@
-export const ranks = [
-  "A",
-  "K",
-  "Q",
-  "J",
-  "T",
-  "9",
-  "8",
-  "7",
-  "6",
-  "5",
-  "4",
-  "3",
-  "2",
-];
-export type Rank = keyof typeof ranks;
+export const ranksMap = {
+  A: "Ace",
+  K: "King",
+  Q: "Queen",
+  J: "Jack",
+  T: "Ten",
+  "9": "Nine",
+  "8": "Eight",
+  "7": "Seven",
+  "6": "Six",
+  "5": "Five",
+  "4": "Four",
+  "3": "Three",
+  "2": "Deuce",
+};
+export type Rank = keyof typeof ranksMap;
+export const ranks = Object.keys(ranksMap) as Rank[];
 
-export const suits = ["h", "s", "d", "c"];
-export type Suit = keyof typeof suits;
+const suitsMap = {
+  h: "heart",
+  s: "spade",
+  c: "club",
+  d: "diamonds",
+};
+export type Suit = keyof typeof suitsMap;
+export const suits = Object.keys(suitsMap) as Suit[];
 
-export const suitness = ["s", "o"];
-export type Suitness = keyof typeof suitness;
+const suitnessMap = {
+  s: "suited",
+  o: "offsuit",
+};
+export type Suitness = keyof typeof suitnessMap;
+export const suitness = Object.keys(suitnessMap) as Suitness[];
 
 export const modifiers = ["+", "-"];
 export type Modifier = keyof typeof modifiers;
@@ -30,16 +41,18 @@ export type Card = {
 };
 
 export type Hand = {
-  type: "HAND";
   card1: Card;
   card2: Card;
+};
+export type HandR = Hand & {
+  type: "HAND";
 };
 export type Range = {
   type: "RANGE";
   rank1: Rank;
   rank2: Rank;
-  suit: Suit | null;
+  suit: Suitness | null;
   modifier: Modifier | null;
 };
 
-export type HandRange = Range | Hand;
+export type HandRange = Range | HandR;
