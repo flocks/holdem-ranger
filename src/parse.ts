@@ -16,6 +16,7 @@ import {
   Range,
   HandR,
   HandRange,
+  Hand,
   Card,
 } from "./types";
 
@@ -45,7 +46,7 @@ const parseCard: P.Parser<string, Card> = pipe(
   P.map((c) => c as Card)
 );
 
-const separator = P.either(C.oneOf(",/|,"), () => S.spaces);
+const separator = P.either(C.oneOf(",/|"), () => S.spaces);
 
 const parseHR: P.Parser<string, Range> = pipe(
   parseRank,
@@ -96,6 +97,17 @@ const parse = (input: string): HandRange[] => {
     return result.right;
   }
   throw new Error("Couldn't parse string");
+};
+
+export const mkHand = (input: string): Hand => {
+  const result = run(parseHand, input);
+  if (result._tag === "Right") {
+    return {
+      card1: result.right.card1,
+      card2: result.right.card2,
+    };
+  }
+  throw new Error("Invalid string to build a hand");
 };
 
 export default parse;

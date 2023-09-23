@@ -1,3 +1,4 @@
+import { sortRanks } from "./utils";
 export const ranksMap = {
   A: "Ace",
   K: "King",
@@ -14,7 +15,7 @@ export const ranksMap = {
   "2": "Deuce",
 };
 export type Rank = keyof typeof ranksMap;
-export const ranks = Object.keys(ranksMap) as Rank[];
+export const ranks = sortRanks(Object.keys(ranksMap) as Rank[]);
 
 const suitsMap = {
   h: "heart",
