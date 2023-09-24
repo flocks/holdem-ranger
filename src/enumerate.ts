@@ -40,6 +40,14 @@ const getUpperRank = (rank: Rank): Rank | null => {
   const upper = ranks[index + 1];
   return upper || null;
 };
+
+const getAllUpperRanks = (rank: Rank, bound: Rank | null): Rank[] => {
+  const currentUpper = getUpperRank(rank);
+  if (!currentUpper) return [];
+  if (currentUpper === bound) return [currentUpper];
+  return [currentUpper, ...getAllUpperRanks(currentUpper, bound)];
+};
+
 const getRanksFrom = (rank: Rank): Rank[] => {
   const upperRank = getUpperRank(rank);
   if (!upperRank) return [rank];
