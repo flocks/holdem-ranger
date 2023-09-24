@@ -85,4 +85,51 @@ describe("Enumeration", () => {
     );
     expect(result).toEqual(expected);
   });
+  test("should enumerate AQs", () => {
+    const expected: Hand[] = sortHands([
+      mkHand("AhQh"),
+      mkHand("AcQc"),
+      mkHand("AdQd"),
+      mkHand("AsQs"),
+    ]);
+    const result = sortHands(
+      enumerateRange({
+        type: "RANGE",
+        rank1: "A",
+        rank2: "Q",
+        modifier: null,
+        suit: "s",
+      })
+    );
+    expect(result).toEqual(expected);
+  });
+  test("should enumerate AQo", () => {
+    const expected: Hand[] = sortHands([
+      mkHand("AhQc"),
+      mkHand("AhQd"),
+      mkHand("AhQs"),
+
+      mkHand("AcQd"),
+      mkHand("AcQs"),
+      mkHand("AcQh"),
+
+      mkHand("AdQh"),
+      mkHand("AdQc"),
+      mkHand("AdQs"),
+
+      mkHand("AsQh"),
+      mkHand("AsQc"),
+      mkHand("AsQd"),
+    ]);
+    const result = sortHands(
+      enumerateRange({
+        type: "RANGE",
+        rank1: "A",
+        rank2: "Q",
+        modifier: null,
+        suit: "o",
+      })
+    );
+    expect(result).toEqual(expected);
+  });
 });

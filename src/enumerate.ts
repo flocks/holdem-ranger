@@ -18,10 +18,20 @@ export const enumerateRange = (range: Range): Hand[] => {
   const cards2 = suits.map((s) => ({ suit: s, kicker: range.rank2 }));
 
   return cards1.flatMap((card1) =>
-    cards2.map((card2) => ({
-      card1,
-      card2,
-    }))
+    cards2
+      .map((card2) => ({
+        card1,
+        card2,
+      }))
+      .filter((h) => {
+        if (range.suit === "s") {
+          return h.card1.suit === h.card2.suit;
+        }
+        if (range.suit === "o") {
+          return h.card1.suit !== h.card2.suit;
+        }
+        return true;
+      })
   );
 };
 
