@@ -1,9 +1,13 @@
 import { describe, expect, test } from "vitest";
 
 import { mkHand } from "../parse";
-import { enumeratePairs, enumeratePairsFrom } from "../enumerate";
+import {
+  enumeratePairs,
+  enumeratePairsFrom,
+  enumerateRange,
+} from "../enumerate";
 import { Hand } from "../types";
-import { sortHands } from "../utils";
+import { formatHands, sortHands } from "../utils";
 
 describe("Enumeration", () => {
   test("should enumerate all pairs of 2", () => {
@@ -44,6 +48,41 @@ describe("Enumeration", () => {
     ]);
 
     const result = sortHands(enumeratePairsFrom("Q"));
+    expect(result).toEqual(expected);
+  });
+
+  test("should enumerate AQ", () => {
+    const expected: Hand[] = sortHands([
+      mkHand("AhQh"),
+      mkHand("AcQc"),
+      mkHand("AdQd"),
+      mkHand("AsQs"),
+
+      mkHand("AhQc"),
+      mkHand("AhQd"),
+      mkHand("AhQs"),
+
+      mkHand("AcQd"),
+      mkHand("AcQs"),
+      mkHand("AcQh"),
+
+      mkHand("AdQh"),
+      mkHand("AdQc"),
+      mkHand("AdQs"),
+
+      mkHand("AsQh"),
+      mkHand("AsQc"),
+      mkHand("AsQd"),
+    ]);
+    const result = sortHands(
+      enumerateRange({
+        type: "RANGE",
+        rank1: "A",
+        rank2: "Q",
+        modifier: null,
+        suit: null,
+      })
+    );
     expect(result).toEqual(expected);
   });
 });

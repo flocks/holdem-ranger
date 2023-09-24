@@ -1,4 +1,4 @@
-import { Rank, Card, suits, Suit, ranks, Hand } from "./types";
+import { Rank, Card, suits, Suit, ranks, Hand, Range } from "./types";
 
 export const enumeratePairs = (rank: Rank): Hand[] => {
   const cards: Card[] = suits.map((suit: Suit) => ({ suit, kicker: rank }));
@@ -11,6 +11,18 @@ export const enumeratePairs = (rank: Rank): Hand[] => {
       card2,
     };
   });
+};
+
+export const enumerateRange = (range: Range): Hand[] => {
+  const cards1 = suits.map((s) => ({ suit: s, kicker: range.rank1 }));
+  const cards2 = suits.map((s) => ({ suit: s, kicker: range.rank2 }));
+
+  return cards1.flatMap((card1) =>
+    cards2.map((card2) => ({
+      card1,
+      card2,
+    }))
+  );
 };
 
 const getUpperRank = (rank: Rank): Rank | null => {
