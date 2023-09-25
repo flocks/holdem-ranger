@@ -33,8 +33,7 @@ const suitnessMap = {
 export type Suitness = keyof typeof suitnessMap;
 export const suitness = Object.keys(suitnessMap) as Suitness[];
 
-export const modifiers = ["+", "-"];
-export type Modifier = keyof typeof modifiers;
+export type Modifier = "+" | null;
 
 export type Card = {
   kicker: Rank;
@@ -52,8 +51,8 @@ export type Range = {
   type: "RANGE";
   rank1: Rank;
   rank2: Rank;
-  suit: Suitness | null;
-  modifier: Modifier | null;
+  suitness: Suitness | null;
+  modifier: Modifier;
 };
 
 export type HandRange = Range | HandR;

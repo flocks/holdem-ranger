@@ -1,4 +1,8 @@
-import { Card, Hand, Rank } from "./types";
+import { Card, Hand, Rank, Range } from "./types";
+
+export const isConnector = (range: Range): boolean => {
+  return ranksToValue[range.rank1] - ranksToValue[range.rank2] === 1;
+};
 
 export const sortHand = (hand: Hand): Hand => {
   const { card1, card2 } = hand;

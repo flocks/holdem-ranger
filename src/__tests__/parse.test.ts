@@ -5,7 +5,7 @@ import parse from "../parse";
 const TwoTwoPlusRange = {
   type: "RANGE",
   modifier: "+",
-  suit: null,
+  suitness: null,
   rank1: "2",
   rank2: "2",
 };
@@ -13,7 +13,7 @@ const TwoTwoPlusRange = {
 const AsTwoSuitedPlusRange = {
   type: "RANGE",
   modifier: "+",
-  suit: "s",
+  suitness: "s",
   rank1: "A",
   rank2: "2",
 };
@@ -33,7 +33,7 @@ describe("Parsing", () => {
       {
         type: "RANGE",
         modifier: null,
-        suit: null,
+        suitness: null,
         rank1: "2",
         rank2: "2",
       },
@@ -44,7 +44,7 @@ describe("Parsing", () => {
       {
         type: "RANGE",
         modifier: "+",
-        suit: null,
+        suitness: null,
         rank1: "A",
         rank2: "2",
       },
@@ -55,7 +55,7 @@ describe("Parsing", () => {
       {
         type: "RANGE",
         modifier: null,
-        suit: "s",
+        suitness: "s",
         rank1: "A",
         rank2: "2",
       },
@@ -69,7 +69,7 @@ describe("Parsing", () => {
       {
         type: "RANGE",
         modifier: null,
-        suit: null,
+        suitness: null,
         rank1: "A",
         rank2: "2",
       },
@@ -80,7 +80,7 @@ describe("Parsing", () => {
       {
         type: "RANGE",
         modifier: null,
-        suit: "s",
+        suitness: "s",
         rank1: "A",
         rank2: "2",
       },

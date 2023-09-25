@@ -10,7 +10,6 @@ import {
   Suit,
   suits,
   Modifier,
-  modifiers,
   Suitness,
   suitness,
   Range,
@@ -21,7 +20,7 @@ import {
 } from "./types";
 
 export const parseModifier: P.Parser<string, Modifier> = pipe(
-  C.oneOf(modifiers.join("")),
+  C.oneOf("+"),
   P.chain((c) => P.of(c as Modifier))
 );
 
@@ -58,7 +57,7 @@ const parseHR: P.Parser<string, Range> = pipe(
     type: "RANGE",
     rank1: hr.rank1,
     rank2: hr.rank2,
-    suit: hr.suit._tag === "None" ? null : hr.suit.value,
+    suitness: hr.suit._tag === "None" ? null : hr.suit.value,
     modifier: hr.modifier._tag === "None" ? null : hr.modifier.value,
   }))
 );
