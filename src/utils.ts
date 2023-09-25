@@ -4,6 +4,10 @@ export const isConnector = (range: Range): boolean => {
   return ranksToValue[range.rank1] - ranksToValue[range.rank2] === 1;
 };
 
+export const isPair = (range: Range): boolean => {
+  return range.rank1 === range.rank2;
+};
+
 export const sortHand = (hand: Hand): Hand => {
   const { card1, card2 } = hand;
   if (ranksToValue[card1.kicker] > ranksToValue[card2.kicker]) {

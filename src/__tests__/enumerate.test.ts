@@ -1,11 +1,7 @@
 import { describe, expect, test } from "vitest";
 
 import { mkHand } from "../parse";
-import {
-  enumeratePairs,
-  enumeratePairsFrom,
-  enumerateRange,
-} from "../enumerate";
+import { enumerate } from "../enumerate";
 import { Hand } from "../types";
 import { sortHands } from "../utils";
 
@@ -20,7 +16,15 @@ describe("Enumeration", () => {
       mkHand("2s2d"),
     ]);
 
-    const result = sortHands(enumeratePairs("2"));
+    const result = sortHands(
+      enumerate({
+        type: "RANGE",
+        rank1: "2",
+        rank2: "2",
+        modifier: null,
+        suitness: null,
+      })
+    );
     expect(result).toEqual(expected);
   });
   test("should enumerate QQ+", () => {
@@ -47,7 +51,15 @@ describe("Enumeration", () => {
       mkHand("AsAd"),
     ]);
 
-    const result = sortHands(enumeratePairsFrom("Q"));
+    const result = sortHands(
+      enumerate({
+        type: "RANGE",
+        rank1: "Q",
+        rank2: "Q",
+        modifier: "+",
+        suitness: null,
+      })
+    );
     expect(result).toEqual(expected);
   });
 
@@ -75,7 +87,7 @@ describe("Enumeration", () => {
       mkHand("AsQd"),
     ]);
     const result = sortHands(
-      enumerateRange({
+      enumerate({
         type: "RANGE",
         rank1: "A",
         rank2: "Q",
@@ -93,7 +105,7 @@ describe("Enumeration", () => {
       mkHand("AsQs"),
     ]);
     const result = sortHands(
-      enumerateRange({
+      enumerate({
         type: "RANGE",
         rank1: "A",
         rank2: "Q",
@@ -122,7 +134,7 @@ describe("Enumeration", () => {
       mkHand("AsQd"),
     ]);
     const result = sortHands(
-      enumerateRange({
+      enumerate({
         type: "RANGE",
         rank1: "A",
         rank2: "Q",
@@ -156,7 +168,7 @@ describe("Enumeration", () => {
       mkHand("AsKs"),
     ]);
     const result = sortHands(
-      enumerateRange({
+      enumerate({
         type: "RANGE",
         rank1: "A",
         rank2: "T",
@@ -190,7 +202,7 @@ describe("Enumeration", () => {
       mkHand("AsKs"),
     ]);
     const result = sortHands(
-      enumerateRange({
+      enumerate({
         type: "RANGE",
         rank1: "A",
         rank2: "T",
@@ -218,7 +230,7 @@ describe("Enumeration", () => {
       mkHand("9s8s"),
     ]);
     const result = sortHands(
-      enumerateRange({
+      enumerate({
         type: "RANGE",
         rank1: "9",
         rank2: "6",
@@ -267,7 +279,7 @@ describe("Enumeration", () => {
       mkHand("AsKs"),
     ]);
     const result = sortHands(
-      enumerateRange({
+      enumerate({
         type: "RANGE",
         rank1: "8",
         rank2: "7",

@@ -1,20 +1,22 @@
 import { Rank, Card, suits, Suit, ranks, Hand, Range } from "./types";
-import { isConnector } from "./utils";
+import { isConnector, isPair } from "./utils";
 
-export const enumeratePairs = (rank: Rank): Hand[] => {
-  const cards: Card[] = suits.map((suit: Suit) => ({ suit, kicker: rank }));
-  return combo(cards, 2).map((hand) => {
-    const card1 = hand[0];
-    const card2 = hand[1];
-    if (!card1 || !card2) throw new Error("invalid");
-    return {
-      card1,
-      card2,
-    };
-  });
+export const enumeratePairs = (range: Range): Hand[] => {
+  const result = enumerateTwoCards(range);
+  if (!range.modifier) return result;
+  if (range.rank1 === "A") return result;
+  const upper = getUpperRank(range.rank1);
+  if (!upper) return result;
+  return [
+    ...result,
+    ...enumeratePairs({ ...range, rank1: upper, rank2: upper }),
+  ];
 };
 
 export const enumerateTwoCards = (range: Range): Hand[] => {
+  if (isPair(range)) {
+    return getComboRank(range.rank1);
+  }
   const cards1 = suits.map((s) => ({ suit: s, kicker: range.rank1 }));
   const cards2 = suits.map((s) => ({ suit: s, kicker: range.rank2 }));
 
@@ -82,19 +84,29 @@ const getUpperRank = (rank: Rank): Rank | null => {
   return upper || null;
 };
 
-const getRanksFrom = (rank: Rank): Rank[] => {
-  const upperRank = getUpperRank(rank);
-  if (!upperRank) return [rank];
-  return [...getRanksFrom(upperRank), rank];
+export const enumerate = (range: Range): Hand[] => {
+  if (isPair(range)) return enumeratePairs(range);
+  if (isConnector(range)) return enumerateConnectors(range);
+  return enumerateGapRange(range);
 };
 
-export const enumeratePairsFrom = (fromRank: Rank): Hand[] => {
-  const ranks = getRanksFrom(fromRank);
-  const r = ranks.map((r) => enumeratePairs(r));
-  return r.flat();
+const getComboRank = (rank: Rank): Hand[] => {
+  const cards: Card[] = suits.map((suit: Suit) => ({
+    suit,
+    kicker: rank,
+  }));
+  return combo(cards, 2).map((hand) => {
+    const card1 = hand[0];
+    const card2 = hand[1];
+    if (!card1 || !card2) throw new Error("invalid");
+    return {
+      card1,
+      card2,
+    };
+  });
 };
 
-function combo<T>(items: T[], k: number) {
+const combo = <T>(items: T[], k: number) => {
   function generateCombinations(
     index: number,
     combination: T[],
@@ -117,4 +129,4 @@ function combo<T>(items: T[], k: number) {
   const result: Array<T[]> = [];
   generateCombinations(0, [], result);
   return result;
-}
+};
