@@ -17,3 +17,6 @@ should print
 AcAd AcAh AcAs AdAh AdAs AhAs KcKd KcKh KcKs KdKh KdKs KhKs QcQd QcQh QcQs QdQh QdQs QhQs JcJd JcJh JcJs JdJh JdJs JhJs TcTd TcTh TcTs TdTh TdTs ThTs 
 #+END_SRC 
 
+** Disclaimer
+
+This library is still under development and is not yet complete.
