@@ -1,4 +1,5 @@
 import parse from "./parse";
+import { enumerate } from "./enumerate";
 
-console.log(parse("AKs"));
-console.log(parse("AKs,22+,AhKd"));
+export { parse };
+export { enumerate };
