@@ -13,14 +13,21 @@ export const isConnector = (range: Range): boolean => {
 };
 
 export const isPair = (range: HandRange): boolean => {
-  if (range.type === "HAND") return false;
-  if (range.type === "RANGE") return range.rank1 === range.rank2;
-  if (range.type === "RANGE_SPAN")
-    return (
-      range.range1.rank1 === range.range1.rank2 &&
-      range.range2.rank1 === range.range2.rank2
-    );
-  return false;
+  switch (range.type) {
+    case "HAND":
+      return false;
+    case "RANGE":
+      return range.rank1 === range.rank2;
+    case "RANGE_SPAN":
+      return (
+        range.range1.rank1 === range.range1.rank2 &&
+        range.range2.rank1 === range.range2.rank2
+      );
+    default: {
+      const exhaustiveCheck: never = range;
+      return exhaustiveCheck;
+    }
+  }
 };
 
 export const sortHand = (hand: Hand): Hand => {
