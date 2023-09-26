@@ -5,7 +5,7 @@
 This typescript library goal is to parse ~Holdem Poker~ hand range
 notations and to return the full list of hands they represent
 
-A good way to understand what this does, is to have a look on `src/__tests__/e2e.test.ts` file
+A good way to understand what this does, is to have a look on ~src/__tests__/e2e.test.ts~ file
 
 #+BEGIN_SRC typescript
     const ranges = parse("99+/AKs+");
