@@ -1,11 +1,26 @@
-import { Card, Hand, Rank, Range, ranks, ranksToValue } from "./types";
+import {
+  Card,
+  Hand,
+  Rank,
+  Range,
+  ranks,
+  ranksToValue,
+  HandRange,
+} from "./types";
 
 export const isConnector = (range: Range): boolean => {
   return ranksToValue[range.rank1] - ranksToValue[range.rank2] === 1;
 };
 
-export const isPair = (range: Range): boolean => {
-  return range.rank1 === range.rank2;
+export const isPair = (range: HandRange): boolean => {
+  if (range.type === "HAND") return false;
+  if (range.type === "RANGE") return range.rank1 === range.rank2;
+  if (range.type === "RANGE_SPAN")
+    return (
+      range.range1.rank1 === range.range1.rank2 &&
+      range.range2.rank1 === range.range2.rank2
+    );
+  return false;
 };
 
 export const sortHand = (hand: Hand): Hand => {

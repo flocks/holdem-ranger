@@ -94,16 +94,8 @@ export const enumerate = (range: HandRange): Hand[] => {
 
 export const expandRangeSpan = (range: RangeSpan): Range[] => {
   const { range1, range2 } = range;
-  // TODO make type more convenient
-  const _range1: Range = {
-    rank1: range1.rank1,
-    rank2: range1.rank2,
-    type: "RANGE",
-    modifier: null,
-    suitness: range.suitness,
-  };
   const ranks = getRanksBetween(range1.rank2, range2.rank2);
-  const _isPair = isPair(_range1);
+  const _isPair = isPair(range);
   return ranks.map((r) => ({
     type: "RANGE",
     modifier: null,
