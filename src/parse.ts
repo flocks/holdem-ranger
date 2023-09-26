@@ -17,7 +17,10 @@ import {
   HandRange,
   Hand,
   Card,
+  RangeSpan,
 } from "./types";
+
+const parseDash = C.char("-");
 
 export const parseModifier: P.Parser<string, Modifier> = pipe(
   C.oneOf("+"),
@@ -62,6 +65,43 @@ const parseHR: P.Parser<string, Range> = pipe(
   }))
 );
 
+export const parseHRSpan: P.Parser<string, RangeSpan> = pipe(
+  parseRank,
+  P.bindTo("r11"),
+  P.bind("r12", () => parseRank),
+  P.bind("suitness", () => P.optional(parseSuitness)),
+  P.bind("", () => parseDash),
+  P.bind("r21", () => parseRank),
+  P.bind("r22", () => parseRank),
+  P.bind("suitness2", () => P.optional(parseSuitness)),
+  P.map((result) => {
+    let suitness = null;
+    if (result.suitness._tag === "Some") {
+      suitness = result.suitness.value;
+    }
+    if (result.suitness2._tag === "Some") {
+      suitness = result.suitness2.value;
+    }
+
+    // TODO find a way to fail the parser if it's not coherent
+    // if range 1 is pair, range 2 must be pair
+    // if not, rank1 of both range must be same
+
+    return {
+      type: "RANGE_SPAN",
+      suitness,
+      range1: {
+        rank1: result.r11,
+        rank2: result.r12,
+      },
+      range2: {
+        rank1: result.r21,
+        rank2: result.r22,
+      },
+    };
+  })
+);
+
 const parseHand: P.Parser<string, HandR> = pipe(
   parseCard,
   P.chain((card1) => {
@@ -76,16 +116,22 @@ const parseHand: P.Parser<string, HandR> = pipe(
   })
 );
 
-const HROrHand = P.either(
+const HR = P.either(
   pipe(
-    parseHR,
+    parseHRSpan,
     P.map((hr) => hr as HandRange)
   ),
   () =>
     pipe(
-      parseHand,
+      parseHR,
       P.map((h) => h as HandRange)
     )
+);
+const HROrHand = P.either(HR, () =>
+  pipe(
+    parseHand,
+    P.map((h) => h as HandRange)
+  )
 );
 
 const parser = pipe(P.surroundedBy(separator)(HROrHand), P.many);

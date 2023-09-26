@@ -1,4 +1,4 @@
-import { Card, Hand, Rank, Range } from "./types";
+import { Card, Hand, Rank, Range, ranks, ranksToValue } from "./types";
 
 export const isConnector = (range: Range): boolean => {
   return ranksToValue[range.rank1] - ranksToValue[range.rank2] === 1;
@@ -39,24 +39,16 @@ export const sortHands = (hands: Hand[]) => {
   });
 };
 
-export const sortRanks = (ranks: Rank[]): Rank[] => {
-  return ranks.sort(compareRank);
+export const getUpperRank = (rank: Rank): Rank | null => {
+  const index = ranks.indexOf(rank);
+  const upper = ranks[index + 1];
+  return upper || null;
 };
-
-const ranksToValue: Record<Rank, number> = {
-  "2": 2,
-  "3": 3,
-  "4": 4,
-  "5": 5,
-  "6": 6,
-  "7": 7,
-  "8": 8,
-  "9": 9,
-  T: 10,
-  J: 11,
-  Q: 12,
-  K: 13,
-  A: 14,
+export const getRanksBetween = (lower: Rank, higher: Rank): Rank[] => {
+  if (lower === higher) return [lower];
+  const upper = getUpperRank(lower);
+  if (!upper) return [lower];
+  return [lower, ...getRanksBetween(upper, higher)];
 };
 
 export const formatCard = (card: Card) => {
@@ -67,11 +59,4 @@ export const formatHand = (hand: Hand) => {
 };
 export const formatHands = (hands: Hand[]) => {
   return hands.map((h) => `${formatHand(h)} `);
-};
-
-const compareRank = (a: Rank, b: Rank) => {
-  const r1 = ranksToValue[a];
-  const r2 = ranksToValue[b];
-
-  return r1 > r2 ? 1 : -1;
 };

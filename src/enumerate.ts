@@ -1,5 +1,14 @@
-import { Rank, Card, suits, Suit, ranks, Hand, Range } from "./types";
-import { isConnector, isPair } from "./utils";
+import {
+  Rank,
+  Card,
+  suits,
+  Suit,
+  Hand,
+  Range,
+  RangeSpan,
+  HandRange,
+} from "./types";
+import { isConnector, isPair, getUpperRank, getRanksBetween } from "./utils";
 
 export const enumeratePairs = (range: Range): Hand[] => {
   const result = enumerateTwoCards(range);
@@ -73,21 +82,40 @@ export const enumerateGapRange = (range: Range): Hand[] => {
   ];
 };
 
-export const enumerateRange = (range: Range): Hand[] => {
-  if (isConnector(range)) return enumerateConnectors(range);
-  return enumerateGapRange(range);
+export const enumerate = (range: HandRange): Hand[] => {
+  if (range.type === "RANGE") {
+    if (isPair(range)) return enumeratePairs(range);
+    if (isConnector(range)) return enumerateConnectors(range);
+    return enumerateGapRange(range);
+  }
+  if (range.type === "RANGE_SPAN") return enumerateSpan(range);
+  return [{ card1: range.card1, card2: range.card2 }];
 };
 
-const getUpperRank = (rank: Rank): Rank | null => {
-  const index = ranks.indexOf(rank);
-  const upper = ranks[index + 1];
-  return upper || null;
+export const expandRangeSpan = (range: RangeSpan): Range[] => {
+  const { range1, range2 } = range;
+  // TODO make type more convenient
+  const _range1: Range = {
+    rank1: range1.rank1,
+    rank2: range1.rank2,
+    type: "RANGE",
+    modifier: null,
+    suitness: range.suitness,
+  };
+  const ranks = getRanksBetween(range1.rank2, range2.rank2);
+  const _isPair = isPair(_range1);
+  return ranks.map((r) => ({
+    type: "RANGE",
+    modifier: null,
+    suitness: range.suitness,
+    rank1: _isPair ? r : range1.rank1,
+    rank2: r,
+  }));
 };
 
-export const enumerate = (range: Range): Hand[] => {
-  if (isPair(range)) return enumeratePairs(range);
-  if (isConnector(range)) return enumerateConnectors(range);
-  return enumerateGapRange(range);
+export const enumerateSpan = (range: RangeSpan): Hand[] => {
+  const ranges = expandRangeSpan(range);
+  return ranges.flatMap(enumerateTwoCards);
 };
 
 const getComboRank = (rank: Rank): Hand[] => {

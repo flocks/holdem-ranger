@@ -39,6 +39,70 @@ describe("Parsing", () => {
       },
     ]);
   });
+  test("should parse a RangeSpan with suitness  (ATs-AQs)", () => {
+    expect(parse("ATs-AQs")).toEqual([
+      {
+        type: "RANGE_SPAN",
+        suitness: "s",
+        range1: {
+          rank1: "A",
+          rank2: "T",
+        },
+        range2: {
+          rank1: "A",
+          rank2: "Q",
+        },
+      },
+    ]);
+  });
+  test("should parse a RangeSpan with inconsistent suit  (ATo-AQs)", () => {
+    expect(parse("ATo-AQs")).toEqual([
+      {
+        type: "RANGE_SPAN",
+        suitness: "s",
+        range1: {
+          rank1: "A",
+          rank2: "T",
+        },
+        range2: {
+          rank1: "A",
+          rank2: "Q",
+        },
+      },
+    ]);
+  });
+  test("should parse a RangeSpan  (AT-AQ)", () => {
+    expect(parse("AT-AQ")).toEqual([
+      {
+        type: "RANGE_SPAN",
+        suitness: null,
+        range1: {
+          rank1: "A",
+          rank2: "T",
+        },
+        range2: {
+          rank1: "A",
+          rank2: "Q",
+        },
+      },
+    ]);
+  });
+  test("should parse a RangeSpan (22-88)", () => {
+    expect(parse("22-88")).toEqual([
+      {
+        type: "RANGE_SPAN",
+        suitness: null,
+        range1: {
+          rank1: "2",
+          rank2: "2",
+        },
+        range2: {
+          rank1: "8",
+          rank2: "8",
+        },
+      },
+    ]);
+  });
   test("should parse a single hand range with only modifier (A2+)", () => {
     expect(parse("A2+")).toEqual([
       {

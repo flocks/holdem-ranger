@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 
 import { mkHand } from "../parse";
-import { enumerate } from "../enumerate";
+import { enumerate, expandRangeSpan } from "../enumerate";
 import { Hand } from "../types";
 import { sortHands } from "../utils";
 
@@ -288,5 +288,121 @@ describe("Enumeration", () => {
       })
     );
     expect(result).toEqual(expected);
+  });
+  test("should handle span range 22-44", () => {
+    const result = sortHands(
+      enumerate({
+        type: "RANGE_SPAN",
+        range1: {
+          rank1: "2",
+          rank2: "2",
+        },
+        range2: {
+          rank1: "4",
+          rank2: "4",
+        },
+        suitness: null,
+      })
+    );
+    const expected: Hand[] = sortHands([
+      mkHand("2h2d"),
+      mkHand("2h2c"),
+      mkHand("2h2s"),
+      mkHand("2c2s"),
+      mkHand("2c2d"),
+      mkHand("2s2d"),
+
+      mkHand("3h3d"),
+      mkHand("3h3c"),
+      mkHand("3h3s"),
+      mkHand("3c3s"),
+      mkHand("3c3d"),
+      mkHand("3s3d"),
+
+      mkHand("4h4d"),
+      mkHand("4h4c"),
+      mkHand("4h4s"),
+      mkHand("4c4s"),
+      mkHand("4c4d"),
+      mkHand("4s4d"),
+    ]);
+
+    expect(result).toEqual(expected);
+  });
+  test("should handle span range ATs-AQs", () => {
+    const result = sortHands(
+      enumerate({
+        type: "RANGE_SPAN",
+        range1: {
+          rank1: "A",
+          rank2: "T",
+        },
+        range2: {
+          rank1: "A",
+          rank2: "Q",
+        },
+        suitness: "s",
+      })
+    );
+    const expected: Hand[] = sortHands([
+      mkHand("AhTh"),
+      mkHand("AcTc"),
+      mkHand("AdTd"),
+      mkHand("AsTs"),
+
+      mkHand("AhJh"),
+      mkHand("AcJc"),
+      mkHand("AdJd"),
+      mkHand("AsJs"),
+
+      mkHand("AhQh"),
+      mkHand("AcQc"),
+      mkHand("AdQd"),
+      mkHand("AsQs"),
+    ]);
+
+    expect(result).toEqual(expected);
+  });
+
+  test("expandRangeSpan should expand pairs range 22-44", () => {
+    expect(
+      expandRangeSpan({
+        type: "RANGE_SPAN",
+        range1: {
+          rank1: "2",
+          rank2: "2",
+        },
+        range2: {
+          rank1: "4",
+          rank2: "4",
+        },
+        suitness: null,
+      })
+    ).toEqual([
+      { type: "RANGE", rank1: "2", rank2: "2", suitness: null, modifier: null },
+      { type: "RANGE", rank1: "3", rank2: "3", suitness: null, modifier: null },
+      { type: "RANGE", rank1: "4", rank2: "4", suitness: null, modifier: null },
+    ]);
+  });
+
+  test("expandRangeSpan should expand range AT-AQ", () => {
+    expect(
+      expandRangeSpan({
+        type: "RANGE_SPAN",
+        range1: {
+          rank1: "A",
+          rank2: "T",
+        },
+        range2: {
+          rank1: "A",
+          rank2: "Q",
+        },
+        suitness: null,
+      })
+    ).toEqual([
+      { type: "RANGE", rank1: "A", rank2: "T", suitness: null, modifier: null },
+      { type: "RANGE", rank1: "A", rank2: "J", suitness: null, modifier: null },
+      { type: "RANGE", rank1: "A", rank2: "Q", suitness: null, modifier: null },
+    ]);
   });
 });
