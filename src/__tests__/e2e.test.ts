@@ -29,4 +29,12 @@ describe("E2E", () => {
 
     expect(result).toEqual(expected);
   });
+  test(" AhKd QQ+", () => {
+    const ranges = parse(" AhKd QQ+");
+    const result = ranges.map(enumerate).flatMap(formatHands).join("").trim();
+    const expected =
+      "AhKd QhQs QhQc QhQd QsQc QsQd QcQd KhKs KhKc KhKd KsKc KsKd KcKd AhAs AhAc AhAd AsAc AsAd AcAd";
+
+    expect(result).toEqual(expected);
+  });
 });
