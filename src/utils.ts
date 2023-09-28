@@ -82,3 +82,20 @@ export const formatHand = (hand: Hand) => {
 export const formatHands = (hands: Hand[]) => {
   return hands.map((h) => `${formatHand(h)} `);
 };
+
+const compareCards = (card1: Card, card2: Card): boolean => {
+  return card1.kicker === card2.kicker && card1.suit === card2.suit;
+};
+const compareHands = (hand1: Hand, hand2: Hand): boolean => {
+  return (
+    compareCards(hand1.card1, hand2.card1) &&
+    compareCards(hand1.card2, hand2.card2)
+  );
+};
+
+export const removeDuplicates = (hands: Hand[]): Hand[] => {
+  return hands.reduce((acc, curr) => {
+    if (acc.some((h) => compareHands(h, curr))) return acc;
+    return [...acc, curr];
+  }, [] as Hand[]);
+};

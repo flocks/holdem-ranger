@@ -1,5 +1,10 @@
 import { describe, test, expect } from "vitest";
-import { sortHand, sortHands, getRanksBetween } from "../utils";
+import {
+  sortHand,
+  sortHands,
+  getRanksBetween,
+  removeDuplicates,
+} from "../utils";
 import { sortRanks } from "../types";
 import { mkHand } from "../parse";
 
@@ -27,8 +32,12 @@ describe("utils", () => {
       [mkHand("Ad3h"), mkHand("2d2h"), mkHand("2d2s")]
     );
   });
-
   test("getRanksBetween should return all ranks between", () => {
     expect(getRanksBetween("2", "5")).toEqual(["2", "3", "4", "5"]);
+  });
+  test("should remove duplicates", () => {
+    expect(
+      removeDuplicates([mkHand("2s2s"), mkHand("2s2s"), mkHand("AhKd")])
+    ).toEqual([mkHand("2s2s"), mkHand("AhKd")]);
   });
 });

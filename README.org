@@ -9,11 +9,10 @@ A good way to understand what this does, is to have a look on ~src/__tests__/e2e
 
 #+BEGIN_SRC typescript
     const ranges = parse("99+/AKs+");
-    const result = ranges.map(enumerate).flatMap(formatHands).join("").trim();
+    const result = enumerateHandRanges(ranges).map(formatHand).join(" ").trim();
     const expected =
       "9h9s 9h9c 9h9d 9s9c 9s9d 9c9d ThTs ThTc ThTd TsTc TsTd TcTd JhJs JhJc JhJd JsJc JsJd JcJd QhQs QhQc QhQd QsQc QsQd QcQd KhKs KhKc KhKd KsKc KsKd KcKd AhAs AhAc AhAd AsAc AsAd AcAd AhKh AsKs AcKc AdKd";
     expect(result).toEqual(expected);
-
 #+END_SRC
 
 

@@ -8,7 +8,13 @@ import {
   RangeSpan,
   HandRange,
 } from "./types";
-import { isConnector, isPair, getUpperRank, getRanksBetween } from "./utils";
+import {
+  isConnector,
+  isPair,
+  getUpperRank,
+  getRanksBetween,
+  removeDuplicates,
+} from "./utils";
 
 export const enumeratePairs = (range: Range): Hand[] => {
   const result = enumerateTwoCards(range);
@@ -82,7 +88,7 @@ export const enumerateGapRange = (range: Range): Hand[] => {
   ];
 };
 
-export const enumerate = (range: HandRange): Hand[] => {
+export const enumerateHandRange = (range: HandRange): Hand[] => {
   if (range.type === "RANGE") {
     if (isPair(range)) return enumeratePairs(range);
     if (isConnector(range)) return enumerateConnectors(range);
@@ -90,6 +96,9 @@ export const enumerate = (range: HandRange): Hand[] => {
   }
   if (range.type === "RANGE_SPAN") return enumerateSpan(range);
   return [{ card1: range.card1, card2: range.card2 }];
+};
+export const enumerateHandRanges = (ranges: HandRange[]): Hand[] => {
+  return removeDuplicates(ranges.flatMap(enumerateHandRange));
 };
 
 export const expandRangeSpan = (range: RangeSpan): Range[] => {
