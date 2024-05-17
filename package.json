@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "lib/index.js",
+  "files": ["lib/", "package.json"],
   "scripts": {
     "build": "tsc",
     "prettier": "prettier --write .",
