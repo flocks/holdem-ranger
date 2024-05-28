@@ -114,6 +114,17 @@ describe("Parsing", () => {
       },
     ]);
   });
+  test("should not take suiteness into account if it's pair range", () => {
+    expect(parse("22s")).toEqual([
+      {
+        type: "RANGE",
+        modifier: null,
+        suitness: null,
+        rank1: "2",
+        rank2: "2",
+      },
+    ]);
+  });
   test("should parse a single hand range with only suitness (A2s)", () => {
     expect(parse("A2s")).toEqual([
       {

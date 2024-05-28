@@ -41,7 +41,7 @@ const parseRank: P.Parser<string, Rank> = pipe(
   P.map((c) => c as Rank)
 );
 
-const parseCard: P.Parser<string, Card> = pipe(
+export const parseCard: P.Parser<string, Card> = pipe(
   parseRank,
   P.bindTo("kicker"),
   P.bind("suit", () => parseSuit),
@@ -60,7 +60,8 @@ const parseHR: P.Parser<string, Range> = pipe(
     type: "RANGE",
     rank1: hr.rank1,
     rank2: hr.rank2,
-    suitness: hr.suit._tag === "None" ? null : hr.suit.value,
+    suitness:
+      hr.suit._tag === "None" || hr.rank1 === hr.rank2 ? null : hr.suit.value,
     modifier: hr.modifier._tag === "None" ? null : hr.modifier.value,
   }))
 );
@@ -102,7 +103,7 @@ export const parseHRSpan: P.Parser<string, RangeSpan> = pipe(
   })
 );
 
-const parseHand: P.Parser<string, HandR> = pipe(
+export const parseHand: P.Parser<string, HandR> = pipe(
   parseCard,
   P.chain((card1) => {
     return pipe(
