@@ -2,8 +2,12 @@
   "name": "holdem-ranger",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "lib/index.js",
-  "files": ["lib/", "package.json"],
+  "files": [
+    "lib/",
+    "package.json"
+  ],
   "scripts": {
     "build": "tsc",
     "prettier": "prettier --write .",
@@ -23,10 +27,11 @@
     "eslint": "^8.35.0",
     "prettier": "^2.8.4",
     "typescript": "^5.2.2",
-    "vitest": "^0.34.4"
+    "vitest": "^1.5.3"
   },
   "dependencies": {
     "fp-ts": "^2.16.1",
-    "parser-ts": "^0.7.0"
+    "parser-ts": "^0.7.0",
+    "vite-tsconfig-paths": "^4.3.2"
   }
 }
