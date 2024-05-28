@@ -41,7 +41,7 @@ const parseRank: P.Parser<string, Rank> = pipe(
   P.map((c) => c as Rank)
 );
 
-export const parseCard: P.Parser<string, Card> = pipe(
+const parseCard: P.Parser<string, Card> = pipe(
   parseRank,
   P.bindTo("kicker"),
   P.bind("suit", () => parseSuit),
@@ -145,6 +145,16 @@ const parse = (input: string): HandRange[] => {
   throw new Error("Couldn't parse string");
 };
 
+export const mkCard = (input: string): Card => {
+  const result = run(parseCard, input);
+  if (result._tag === "Right") {
+    return {
+      kicker: result.right.kicker,
+      suit: result.right.suit,
+    };
+  }
+  throw new Error("Invalid string to build a hand");
+};
 export const mkHand = (input: string): Hand => {
   const result = run(parseHand, input);
   if (result._tag === "Right") {

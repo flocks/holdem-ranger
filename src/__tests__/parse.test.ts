@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 
-import parse from "../parse";
+import parse, { mkCard } from "../parse";
 
 const TwoTwoPlusRange = {
   type: "RANGE",
@@ -178,5 +178,11 @@ describe("Parsing", () => {
   });
   test("should not parse invalid stuff", () => {
     expect(parse("invalid input")).toEqual([]);
+  });
+  test("Should parse a card", () => {
+    expect(mkCard("Ah")).toEqual({
+      kicker: "A",
+      suit: "h",
+    });
   });
 });

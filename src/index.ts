@@ -1,5 +1,5 @@
-import parse, { parseCard } from "./parse";
+import parse from "./parse";
 import { enumerateHandRanges } from "./enumerate";
 
-export { parse, parseCard };
+export { parse };
 export { enumerateHandRanges as enumerate };
