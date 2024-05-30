@@ -83,7 +83,7 @@ export const formatHands = (hands: Hand[]) => {
   return hands.map((h) => `${formatHand(h)} `);
 };
 
-const compareCards = (card1: Card, card2: Card): boolean => {
+export const compareCards = (card1: Card, card2: Card): boolean => {
   return card1.kicker === card2.kicker && card1.suit === card2.suit;
 };
 const compareHands = (hand1: Hand, hand2: Hand): boolean => {
